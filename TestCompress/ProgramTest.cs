@@ -1,9 +1,7 @@
 ﻿namespace TestCompress
 {
-    using System;
     using System.IO;
     using System.IO.Compression;
-    using System.Text;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
@@ -54,31 +52,6 @@
             Assert.IsFalse(File.Exists(files[0]));
             Assert.IsTrue(File.Exists(files[1]));
         }
-
-        //[TestMethod]
-        //public void Main_Exception()
-        //{
-        //    var args = new string[] { "filenotfound.zip", "-d", @"Result", "-r" };
-        //    Assert.ThrowsException(Compress.Program.Main, "",args);
-        //}
-        #region ExecuteCompressメソッド
-        [TestMethod]
-        public void ExecuteCompress_ok()
-        {
-            var files = Copy01ZipTo("ExecuteCompress_ok");
-            program.InvokeStatic("ExecuteCompress", files[0], @"Result");
-            Assert.IsTrue(File.Exists(files[0]));
-            Assert.IsTrue(File.Exists(files[1]));
-        }
-
-        [TestMethod]
-        public void ExecuteRemove_ok()
-        {
-            var files = Copy01ZipTo("ExecuteRemove_ok");
-            program.InvokeStatic("ExecuteRemove", files[0]);
-            Assert.IsFalse(File.Exists(files[0]));
-        }
-        #endregion
 
         private string[] Copy01ZipTo(string filename)
         {

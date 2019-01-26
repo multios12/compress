@@ -85,14 +85,36 @@
         /// <param name="sourcePath">対象パス</param>
         private static void ExecuteRemove(string sourcePath)
         {
+            File.SetAttributes(sourcePath, FileAttributes.Normal);
             if (File.Exists(sourcePath))
             {
                 File.Delete(sourcePath);
             }
             else
             {
-                Directory.Delete(sourcePath);
+                DirectoryDelete(sourcePath);
             }
+        }
+
+        private static void DirectoryDelete(string sourcePath)
+        {
+            // ディレクトリ以外の全ファイルを削除
+            string[] filePaths = Directory.GetFiles(sourcePath);
+            foreach (string filePath in filePaths)
+            {
+                File.SetAttributes(filePath, FileAttributes.Normal);
+                File.Delete(filePath);
+            }
+
+            // ディレクトリの中のディレクトリも再帰的に削除
+            string[] directoryPaths = Directory.GetDirectories(sourcePath);
+            foreach (string directoryPath in directoryPaths)
+            {
+                File.SetAttributes(directoryPath, FileAttributes.Normal);
+                DirectoryDelete(directoryPath);
+            }
+
+            Directory.Delete(sourcePath);
         }
     }
 }

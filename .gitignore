@@ -28,3 +28,4 @@ _ReSharper*/
 packages/
 *.vssscc
 $tf*/
+/.vs/Compress/v15/Server/sqlite3
