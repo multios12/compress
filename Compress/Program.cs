@@ -29,17 +29,21 @@
         {
             try
             {
-                var result = ExecuteCompress(this.FilePath, this.DistFolderPath);
+                string distFilePath;
+                var result = ExecuteCompress(this.FilePath, this.DistFolderPath, out distFilePath);
+
                 if (result == 0 && this.Remove)
                 {
                     ExecuteRemove(this.FilePath);
                 }
 
+                Logger.WriteLine($"ok:{(this.Remove ? "r" : " ")}: {distFilePath}");
+
                 return result;
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"圧縮失敗: {ex.Message}\r\n{ex.StackTrace}");
+                Console.Error.WriteLine($"error: {ex.Message}\r\n{ex.StackTrace}");
                 return -1;
             }
         }
@@ -49,8 +53,9 @@
         /// </summary>
         /// <param name="sourcePath">圧縮元パス</param>
         /// <param name="distFolderPath">圧縮先フォルダパス</param>
+        /// <param name="distFilePath">圧縮後ファイルパス</param>
         /// <returns>正常に終了した場合、0</returns>
-        private static int ExecuteCompress(string sourcePath, string distFolderPath)
+        private static int ExecuteCompress(string sourcePath, string distFolderPath, out string distFilePath)
         {
             using (CompressorBase compressor = CompressorBase.AnalyzeSourceType(sourcePath))
             {
@@ -59,10 +64,11 @@
                 if (compressor.Streams.Count == 0)
                 {
                     Console.WriteLine("圧縮失敗: 画像ファイルが見つかりませんでした");
+                    distFilePath = null;
                     return 1;
                 }
 
-                var distFilePath = compressor.CreatedistFilePath(distFolderPath);
+                distFilePath = compressor.CreatedistFilePath(distFolderPath);
 
                 using (Stream zipStream = File.Create(distFilePath))
                 using (IWriter writer = WriterFactory.Open(zipStream, ArchiveType.Zip, CompressionType.None))

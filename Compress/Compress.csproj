@@ -82,6 +82,7 @@
     <Compile Include="Data\ResizeModeConstants.cs" />
     <Compile Include="Compressor\FolderCompressor.cs" />
     <Compile Include="Compressor\CompressorBase.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="StreamProcess.cs">
       <SubType>Component</SubType>
     </Compile>

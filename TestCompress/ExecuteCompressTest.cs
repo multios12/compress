@@ -22,7 +22,7 @@
         public void ExecuteCompress_ok()
         {
             var files = Copy01ZipTo("ExecuteCompress_ok");
-            program.InvokeStatic("ExecuteCompress", files[0], @"Result");
+            program.InvokeStatic("ExecuteCompress", files[0], @"Result", null);
             Assert.IsTrue(File.Exists(files[0]));
             Assert.IsTrue(File.Exists(files[1]));
         }
